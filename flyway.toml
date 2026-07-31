@@ -31,3 +31,12 @@ ignoreNewlinesInTextObjects = "off"
   [[redgateCompare.staticDataTables]]
   schema = "public"
   table = "playing_with_lakebase"
+
+[environments.test]
+url = "jdbc:postgresql://ep-snowy-fire-edmug8v7.database.uksouth.azuredatabricks.net/databricks_postgres?sslmode=require"
+schemas = [ "public" ]
+
+[environments.prod]
+url = "jdbc:postgresql://ep-aged-block-edrgs8pn.database.uksouth.azuredatabricks.net/databricks_postgres?sslmode=require"
+schemas = [ "public" ]
+displayName = "prod"
