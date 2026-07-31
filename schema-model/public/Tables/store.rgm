@@ -1,0 +1,96 @@
+table "public"."store" {
+  primaryKey = {
+    columns = [
+      "store_id"
+    ]
+    name = "store_pkey"
+    objectType = primaryKey
+  }
+  owner = stephanie.herr@red-gate.com
+  privileges = <
+    {
+      grantee = "stephanie.herr@red-gate.com"
+      privilegeTypes = [
+        INSERT
+        SELECT
+        UPDATE
+        DELETE
+        TRUNCATE
+        REFERENCES
+        TRIGGER
+        MAINTAIN
+      ]
+    }
+
+    {
+      grantee = app_user
+      privilegeTypes = [
+        INSERT
+        SELECT
+        UPDATE
+        DELETE
+      ]
+    }
+
+    {
+      grantee = databricks_gateway
+      privilegeTypes = [
+        SELECT
+      ]
+    }
+
+    {
+      grantee = databricks_superuser
+      privilegeTypes = [
+        INSERT
+        SELECT
+        UPDATE
+        DELETE
+        TRUNCATE
+        REFERENCES
+        TRIGGER
+        MAINTAIN
+      ]
+    }
+
+    {
+      grantee = databricks_reader_16403
+      privilegeTypes = [
+        SELECT
+      ]
+    }
+
+  >
+  columns = (
+    column "store_id" {
+      type = integer
+      null = NOT NULL
+      generatedAsIdentity = BY DEFAULT
+    }
+    column "manager_staff_id" {
+      type = integer
+    }
+    column "address_id" {
+      type = integer
+      null = NOT NULL
+    }
+    column "last_update" {
+      type = timestamp with time zone
+      null = NOT NULL
+      default = now()
+    }
+  )
+}
+
+foreignKey "public"."store"."store_address_id_fkey" {
+  columns = [
+    "address_id"
+  ]
+  referencedTable = "public"."address"
+  referencedColumns = [
+    "address_id"
+  ]
+  onUpdate = CASCADE
+  onDelete = RESTRICT
+}
+

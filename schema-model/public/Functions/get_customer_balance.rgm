@@ -1,0 +1,50 @@
+function "public"."get_customer_balance(integer, timestamp with time zone)" {
+  text = """
+
+       -- Calculates total fees and subtracts previous payment amounts
+DECLARE
+    v_rentfees NUMERIC; 
+    v_overdues NUMERIC; 
+    v_payments NUMERIC; 
+BEGIN
+    SELECT COALESCE(SUM(film.rental_rate),0) INTO v_rentfees
+    FROM public.film, public.inventory, public.rental
+    WHERE film.film_id = inventory.film_id
+      AND inventory.inventory_id = rental.inventory_id
+      AND rental.customer_id = p_customer_id
+      AND rental.rental_date <= p_effective_date;
+
+    SELECT COALESCE(SUM(CASE WHEN (rental.return_date > (rental.rental_date + (film.rental_duration * EXTRA -1))) THEN (film.rental_rate) ELSE 0 END),0) INTO v_overdues
+    FROM public.film, public.inventory, public.rental
+    WHERE film.film_id = inventory.film_id
+      AND inventory.inventory_id = rental.inventory_id
+      AND rental.customer_id = p_customer_id
+      AND rental.rental_date <= p_effective_date;
+
+    SELECT COALESCE(SUM(payment.amount),0) INTO v_payments
+    FROM public.payment
+    WHERE payment.customer_id = p_customer_id
+      AND payment.payment_date <= p_effective_date;
+
+    RETURN v_rentfees + v_overdues - v_payments;
+END;
+"""
+  returnType = numeric
+  arguments = <
+    {
+      name = p_customer_id
+      type = integer
+      mode = IN
+    }
+
+    {
+      name = p_effective_date
+      type = timestamp with time zone
+      mode = IN
+    }
+
+  >
+  language = plpgsql
+  owner = stephanie.herr@red-gate.com
+}
+

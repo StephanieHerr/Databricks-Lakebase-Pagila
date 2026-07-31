@@ -1,0 +1,105 @@
+table "public"."film_actor" {
+  primaryKey = {
+    columns = [
+      "actor_id"
+      "film_id"
+    ]
+    name = "film_actor_pkey"
+    objectType = primaryKey
+  }
+  owner = stephanie.herr@red-gate.com
+  privileges = <
+    {
+      grantee = "stephanie.herr@red-gate.com"
+      privilegeTypes = [
+        INSERT
+        SELECT
+        UPDATE
+        DELETE
+        TRUNCATE
+        REFERENCES
+        TRIGGER
+        MAINTAIN
+      ]
+    }
+
+    {
+      grantee = app_user
+      privilegeTypes = [
+        INSERT
+        SELECT
+        UPDATE
+        DELETE
+      ]
+    }
+
+    {
+      grantee = databricks_gateway
+      privilegeTypes = [
+        SELECT
+      ]
+    }
+
+    {
+      grantee = databricks_superuser
+      privilegeTypes = [
+        INSERT
+        SELECT
+        UPDATE
+        DELETE
+        TRUNCATE
+        REFERENCES
+        TRIGGER
+        MAINTAIN
+      ]
+    }
+
+    {
+      grantee = databricks_reader_16403
+      privilegeTypes = [
+        SELECT
+      ]
+    }
+
+  >
+  columns = (
+    column "actor_id" {
+      type = integer
+      null = NOT NULL
+    }
+    column "film_id" {
+      type = integer
+      null = NOT NULL
+    }
+    column "last_update" {
+      type = timestamp with time zone
+      null = NOT NULL
+      default = now()
+    }
+  )
+}
+
+foreignKey "public"."film_actor"."film_actor_actor_id_fkey" {
+  columns = [
+    "actor_id"
+  ]
+  referencedTable = "public"."actor"
+  referencedColumns = [
+    "actor_id"
+  ]
+  onUpdate = CASCADE
+  onDelete = RESTRICT
+}
+
+foreignKey "public"."film_actor"."film_actor_film_id_fkey" {
+  columns = [
+    "film_id"
+  ]
+  referencedTable = "public"."film"
+  referencedColumns = [
+    "film_id"
+  ]
+  onUpdate = CASCADE
+  onDelete = RESTRICT
+}
+

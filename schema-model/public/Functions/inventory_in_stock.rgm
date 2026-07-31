@@ -1,0 +1,37 @@
+function "public"."inventory_in_stock(integer)" {
+  text = """
+
+DECLARE
+    v_rentals INTEGER;
+    v_out INTEGER;
+BEGIN
+    SELECT COUNT(*) INTO v_rentals FROM public.rental WHERE inventory_id = p_inventory_id;
+    IF v_rentals = 0 THEN
+      RETURN TRUE;
+    END IF;
+
+    SELECT COUNT(*) INTO v_out FROM public.inventory, public.rental 
+    WHERE inventory.inventory_id = rental.inventory_id 
+      AND rental.inventory_id = p_inventory_id 
+      AND rental.return_date IS NULL;
+
+    IF v_out > 0 THEN
+      RETURN FALSE;
+    ELSE
+      RETURN TRUE;
+    END IF;
+END;
+"""
+  returnType = boolean
+  arguments = <
+    {
+      name = p_inventory_id
+      type = integer
+      mode = IN
+    }
+
+  >
+  language = plpgsql
+  owner = stephanie.herr@red-gate.com
+}
+

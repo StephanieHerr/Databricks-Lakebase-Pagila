@@ -1,0 +1,105 @@
+view "public"."customer_list" {
+  text = """-
+SELECT cu.customer_id AS id,
+    (((cu.first_name)::text || ' '::text) || (cu.last_name)::text) AS name,
+    (a.address)::text AS address,
+    (a.postal_code)::text AS "zip code",
+    (a.phone)::text AS phone,
+    (city.city)::text AS city,
+    (country.country)::text AS country,
+        CASE
+            WHEN cu.activebool THEN 'active'::text
+            ELSE ''::text
+        END AS notes,
+    cu.store_id AS sid
+   FROM (((public.customer cu
+     JOIN public.address a ON ((cu.address_id = a.address_id)))
+     JOIN public.city city ON ((a.city_id = city.city_id)))
+     JOIN public.country country ON ((city.country_id = country.country_id)));
+"""
+  privileges = <
+    {
+      grantee = "stephanie.herr@red-gate.com"
+      privilegeTypes = [
+        INSERT
+        SELECT
+        UPDATE
+        DELETE
+        TRUNCATE
+        REFERENCES
+        TRIGGER
+        MAINTAIN
+      ]
+    }
+
+    {
+      grantee = app_user
+      privilegeTypes = [
+        INSERT
+        SELECT
+        UPDATE
+        DELETE
+      ]
+    }
+
+    {
+      grantee = databricks_gateway
+      privilegeTypes = [
+        SELECT
+      ]
+    }
+
+    {
+      grantee = databricks_superuser
+      privilegeTypes = [
+        INSERT
+        SELECT
+        UPDATE
+        DELETE
+        TRUNCATE
+        REFERENCES
+        TRIGGER
+        MAINTAIN
+      ]
+    }
+
+    {
+      grantee = databricks_reader_16403
+      privilegeTypes = [
+        SELECT
+      ]
+    }
+
+  >
+  owner = stephanie.herr@red-gate.com
+  columns = (
+    column "id" {
+      type = integer
+    }
+    column "name" {
+      type = text
+    }
+    column "address" {
+      type = text
+    }
+    column "zip code" {
+      type = text
+    }
+    column "phone" {
+      type = text
+    }
+    column "city" {
+      type = text
+    }
+    column "country" {
+      type = text
+    }
+    column "notes" {
+      type = text
+    }
+    column "sid" {
+      type = integer
+    }
+  )
+}
+

@@ -1,0 +1,13 @@
+[environments.development]
+url = "jdbc:postgresql://ep-purple-bar-edzrpa7p.database.uksouth.azuredatabricks.net/databricks_postgres?sslmode=require"
+user = "stephanie.herr@red-gate.com"
+password = "${localSecret.Flyway Desktop 595b0795-e793-406e-b661-b232f5ed2983}"
+schemas = [ "public" ]
+provisioner = "none"
+
+[environments.shadow]
+url = "jdbc:postgresql:/ep-patient-bar-ed0ev2x7.database.uksouth.azuredatabricks.net/databricks_postgres?sslmode=require"
+user = "stephanie.herr@red-gate.com"
+password = "eyJraWQiOiJjMGQ2YzQ2MTA4NWVmY2E1YTgzYTMxNzI2ZDQ2ZmMzN2QxNmMwYzY4NWQwNDRhMTJhNTUxNjhhOGM3MzZkM2U2IiwidHlwIjoiYXQrand0IiwiYWxnIjoiUlMyNTYifQ.eyJjbGllbnRfaWQiOiJkYXRhYnJpY2tzLXNlc3Npb24iLCJzY29wZSI6ImlhbS5jdXJyZW50LXVzZXI6cmVhZCBpYW0uZ3JvdXBzOnJlYWQgaWFtLnNlcnZpY2UtcHJpbmNpcGFsczpyZWFkIGlhbS51c2VyczpyZWFkIiwiaWRtIjoiRUFBWW9NT281X2FnSVE9PSIsImlzcyI6Imh0dHBzOi8vYWRiLTc0MDU2MTA2NDQzNTc2NDAuMC5henVyZWRhdGFicmlja3MubmV0L29pZGMiLCJhdWQiOiI3NDA1NjEwNjQ0MzU3NjQwIiwic3ViIjoic3RlcGhhbmllLmhlcnJAcmVkLWdhdGUuY29tIiwiaWF0IjoxNzg0NzQ4NDQ3LCJleHAiOjE3ODQ3NTIwNDcsImp0aSI6ImVhODk5OTg1LTgyMWQtNGViMy1hM2YwLWJlZjJhNDJkMTM0MiJ9.I1RlpIjwDNI35kzpw5SYhuHkXPwT-_blF-Y8RbGaAraE33dtfZ1dBAXxfulc79M5LtOGKIWoRH_WXFJ4rdbHE1jR7Dv0eMC0jYRg5-_rqM8RE20rmuJrugoylLTusccoCWWqnV5I0u9L1_wu6tPHRbxcSXDS9bj-3W-muIkTOhWtc56vfOgwP0ZZQfnn_ycU6BS_WWM7biKYrba2CQ3IDrp6m9fFad41rrnaT9fl2huz2R1mMrwkev9sib3vNY6GQXxQ4lOmVEGpL9X2WVhCuaPDXCOGMaxO7razp2LPtboyvUOGlW1IshInYgwCmBefxLemxOhfIsY65_b66c55jw"
+schemas = [ "public" ]
+provisioner = "none"

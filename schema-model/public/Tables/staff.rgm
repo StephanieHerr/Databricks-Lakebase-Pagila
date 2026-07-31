@@ -1,0 +1,135 @@
+table "public"."staff" {
+  primaryKey = {
+    columns = [
+      "staff_id"
+    ]
+    name = "staff_pkey"
+    objectType = primaryKey
+  }
+  owner = stephanie.herr@red-gate.com
+  privileges = <
+    {
+      grantee = "stephanie.herr@red-gate.com"
+      privilegeTypes = [
+        INSERT
+        SELECT
+        UPDATE
+        DELETE
+        TRUNCATE
+        REFERENCES
+        TRIGGER
+        MAINTAIN
+      ]
+    }
+
+    {
+      grantee = app_user
+      privilegeTypes = [
+        INSERT
+        SELECT
+        UPDATE
+        DELETE
+      ]
+    }
+
+    {
+      grantee = databricks_gateway
+      privilegeTypes = [
+        SELECT
+      ]
+    }
+
+    {
+      grantee = databricks_superuser
+      privilegeTypes = [
+        INSERT
+        SELECT
+        UPDATE
+        DELETE
+        TRUNCATE
+        REFERENCES
+        TRIGGER
+        MAINTAIN
+      ]
+    }
+
+    {
+      grantee = databricks_reader_16403
+      privilegeTypes = [
+        SELECT
+      ]
+    }
+
+  >
+  columns = (
+    column "staff_id" {
+      type = integer
+      null = NOT NULL
+      generatedAsIdentity = BY DEFAULT
+    }
+    column "first_name" {
+      type = character varying(45)
+      null = NOT NULL
+    }
+    column "last_name" {
+      type = character varying(45)
+      null = NOT NULL
+    }
+    column "address_id" {
+      type = integer
+      null = NOT NULL
+    }
+    column "email" {
+      type = character varying(50)
+    }
+    column "store_id" {
+      type = integer
+      null = NOT NULL
+    }
+    column "active" {
+      type = boolean
+      null = NOT NULL
+      default = true
+    }
+    column "username" {
+      type = character varying(16)
+      null = NOT NULL
+    }
+    column "password" {
+      type = character varying(40)
+    }
+    column "last_update" {
+      type = timestamp with time zone
+      null = NOT NULL
+      default = now()
+    }
+    column "picture" {
+      type = bytea
+    }
+  )
+}
+
+foreignKey "public"."staff"."staff_address_id_fkey" {
+  columns = [
+    "address_id"
+  ]
+  referencedTable = "public"."address"
+  referencedColumns = [
+    "address_id"
+  ]
+  onUpdate = CASCADE
+  onDelete = RESTRICT
+}
+
+foreignKey "public"."staff"."staff_store_id_fkey" {
+  columns = [
+    "store_id"
+  ]
+  referencedTable = "public"."store"
+  referencedColumns = [
+    "store_id"
+  ]
+  onUpdate = CASCADE
+  onDelete = SET NULL
+}
+

@@ -1,0 +1,81 @@
+table "public"."country" {
+  primaryKey = {
+    columns = [
+      "country_id"
+    ]
+    name = "country_pkey"
+    objectType = primaryKey
+  }
+  owner = stephanie.herr@red-gate.com
+  privileges = <
+    {
+      grantee = "stephanie.herr@red-gate.com"
+      privilegeTypes = [
+        INSERT
+        SELECT
+        UPDATE
+        DELETE
+        TRUNCATE
+        REFERENCES
+        TRIGGER
+        MAINTAIN
+      ]
+    }
+
+    {
+      grantee = app_user
+      privilegeTypes = [
+        INSERT
+        SELECT
+        UPDATE
+        DELETE
+      ]
+    }
+
+    {
+      grantee = databricks_gateway
+      privilegeTypes = [
+        SELECT
+      ]
+    }
+
+    {
+      grantee = databricks_superuser
+      privilegeTypes = [
+        INSERT
+        SELECT
+        UPDATE
+        DELETE
+        TRUNCATE
+        REFERENCES
+        TRIGGER
+        MAINTAIN
+      ]
+    }
+
+    {
+      grantee = databricks_reader_16403
+      privilegeTypes = [
+        SELECT
+      ]
+    }
+
+  >
+  columns = (
+    column "country_id" {
+      type = integer
+      null = NOT NULL
+      generatedAsIdentity = BY DEFAULT
+    }
+    column "country" {
+      type = character varying(50)
+      null = NOT NULL
+    }
+    column "last_update" {
+      type = timestamp with time zone
+      null = NOT NULL
+      default = now()
+    }
+  )
+}
+

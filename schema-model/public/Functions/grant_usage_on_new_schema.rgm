@@ -1,0 +1,36 @@
+function "public"."grant_usage_on_new_schema()" {
+  text = """
+
+DECLARE
+    db_id TEXT;
+    obj record;
+BEGIN
+    SELECT oid FROM pg_catalog.pg_database WHERE datname = pg_catalog.current_database() INTO db_id;
+    FOR obj IN (SELECT * FROM pg_catalog.pg_event_trigger_ddl_commands() AS ddl
+                WHERE ddl.object_type = 'schema' AND ddl.object_identity != '__db_system')
+    LOOP
+        BEGIN
+            EXECUTE pg_catalog.format('GRANT USAGE ON SCHEMA %s TO "databricks_gateway"', obj.object_identity);
+            EXECUTE pg_catalog.format('GRANT ALL ON SCHEMA %s TO "databricks_superuser" WITH GRANT OPTION', obj.object_identity);
+        EXCEPTION
+            WHEN others THEN
+                RAISE WARNING 'An error occurred while granting system permissions on schema %: %', obj.object_identity, SQLERRM;
+        END;
+
+        BEGIN
+            EXECUTE pg_catalog.format('GRANT USAGE ON SCHEMA %s TO databricks_reader_%s', obj.object_identity, db_id);
+            EXECUTE pg_catalog.format('GRANT USAGE, CREATE ON SCHEMA %s TO databricks_writer_%s', obj.object_identity, db_id);
+        EXCEPTION
+            WHEN others then
+                RAISE WARNING 'An error occurred while granting system permissions on schema %: %', obj.object_identity, SQLERRM;
+        END;
+    END LOOP;
+END;
+"""
+  returnType = event_trigger
+  arguments = [
+  ]
+  language = plpgsql
+  owner = cloud_admin
+}
+

@@ -1,0 +1,100 @@
+view "public"."film_list" {
+  text = """-
+SELECT film.film_id AS fid,
+    film.title,
+    film.description,
+    category.name AS category,
+    film.rental_rate AS price,
+    film.length,
+    film.rating,
+    public.group_concat((((actor.first_name)::text || ' '::text) || (actor.last_name)::text)) AS actors
+   FROM ((((public.category
+     JOIN public.film_category ON ((category.category_id = film_category.category_id)))
+     JOIN public.film ON ((film_category.film_id = film.film_id)))
+     JOIN public.film_actor ON ((film.film_id = film_actor.film_id)))
+     JOIN public.actor ON ((film_actor.actor_id = actor.actor_id)))
+  GROUP BY film.film_id, film.title, film.description, category.name, film.rental_rate, film.length, film.rating;
+"""
+  privileges = <
+    {
+      grantee = "stephanie.herr@red-gate.com"
+      privilegeTypes = [
+        INSERT
+        SELECT
+        UPDATE
+        DELETE
+        TRUNCATE
+        REFERENCES
+        TRIGGER
+        MAINTAIN
+      ]
+    }
+
+    {
+      grantee = app_user
+      privilegeTypes = [
+        INSERT
+        SELECT
+        UPDATE
+        DELETE
+      ]
+    }
+
+    {
+      grantee = databricks_gateway
+      privilegeTypes = [
+        SELECT
+      ]
+    }
+
+    {
+      grantee = databricks_superuser
+      privilegeTypes = [
+        INSERT
+        SELECT
+        UPDATE
+        DELETE
+        TRUNCATE
+        REFERENCES
+        TRIGGER
+        MAINTAIN
+      ]
+    }
+
+    {
+      grantee = databricks_reader_16403
+      privilegeTypes = [
+        SELECT
+      ]
+    }
+
+  >
+  owner = stephanie.herr@red-gate.com
+  columns = (
+    column "fid" {
+      type = integer
+    }
+    column "title" {
+      type = character varying(255)
+    }
+    column "description" {
+      type = text
+    }
+    column "category" {
+      type = character varying(25)
+    }
+    column "price" {
+      type = numeric(4,2)
+    }
+    column "length" {
+      type = smallint
+    }
+    column "rating" {
+      type = public.mpaa_rating
+    }
+    column "actors" {
+      type = text
+    }
+  )
+}
+

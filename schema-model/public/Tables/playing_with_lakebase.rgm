@@ -1,0 +1,80 @@
+table "public"."playing_with_lakebase" {
+  primaryKey = {
+    columns = [
+      "id"
+    ]
+    name = "playing_with_lakebase_pkey"
+    objectType = primaryKey
+  }
+  owner = stephanie.herr@red-gate.com
+  privileges = <
+    {
+      grantee = "stephanie.herr@red-gate.com"
+      privilegeTypes = [
+        INSERT
+        SELECT
+        UPDATE
+        DELETE
+        TRUNCATE
+        REFERENCES
+        TRIGGER
+        MAINTAIN
+      ]
+    }
+
+    {
+      grantee = databricks_gateway
+      privilegeTypes = [
+        SELECT
+      ]
+    }
+
+    {
+      grantee = databricks_superuser
+      privilegeTypes = [
+        INSERT
+        SELECT
+        UPDATE
+        DELETE
+        TRUNCATE
+        REFERENCES
+        TRIGGER
+        MAINTAIN
+      ]
+    }
+
+    {
+      grantee = databricks_reader_16403
+      privilegeTypes = [
+        SELECT
+      ]
+    }
+
+    {
+      grantee = app_user
+      privilegeTypes = [
+        INSERT
+        SELECT
+        UPDATE
+        DELETE
+      ]
+    }
+
+  >
+  dataFilename = playing_with_lakebase-data.json
+  columns = (
+    column "id" {
+      type = integer
+      null = NOT NULL
+      default = nextval('public.playing_with_lakebase_id_seq'::regclass)
+    }
+    column "name" {
+      type = text
+      null = NOT NULL
+    }
+    column "value" {
+      type = real
+    }
+  )
+}
+

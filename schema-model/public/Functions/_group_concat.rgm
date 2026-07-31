@@ -1,0 +1,29 @@
+function "public"."_group_concat(text, text)" {
+  text = """
+
+SELECT CASE
+  WHEN $1 IS NULL OR $1 = '' THEN $2
+  WHEN $2 IS NULL OR $2 = '' THEN $1
+  ELSE $1 || ', ' || $2
+END;
+"""
+  returnType = text
+  arguments = <
+    {
+      name = 
+      type = text
+      mode = IN
+    }
+
+    {
+      name = 
+      type = text
+      mode = IN
+    }
+
+  >
+  language = sql
+  volatility = IMMUTABLE
+  owner = stephanie.herr@red-gate.com
+}
+

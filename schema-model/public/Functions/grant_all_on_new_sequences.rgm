@@ -1,0 +1,30 @@
+function "public"."grant_all_on_new_sequences()" {
+  text = """
+
+DECLARE
+    db_id TEXT;
+    obj record;
+    schema_name TEXT;
+    object_name TEXT;
+BEGIN
+    SELECT oid FROM pg_catalog.pg_database WHERE datname = pg_catalog.current_database() INTO db_id;
+    FOR obj IN (SELECT * FROM pg_catalog.pg_event_trigger_ddl_commands() AS ddl
+                WHERE ddl.object_type = 'sequence'
+                AND ddl.object_identity != '__db_system')
+    LOOP
+        BEGIN
+            EXECUTE pg_catalog.format('GRANT ALL ON %s TO "databricks_superuser" WITH GRANT OPTION', obj.object_identity);
+        EXCEPTION
+            WHEN others THEN
+                RAISE WARNING 'An error occurred while granting system permissions on object %: %', obj.object_identity, SQLERRM;
+        END;
+    END LOOP;
+END;
+"""
+  returnType = event_trigger
+  arguments = [
+  ]
+  language = plpgsql
+  owner = cloud_admin
+}
+
