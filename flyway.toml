@@ -9,6 +9,8 @@ mixed = true
 outOfOrder = true
 schemaModelLocation = "schema-model"
 validateMigrationNaming = true
+baselineVersion = "001_20260731144740"
+baselineOnMigrate = true
 
 [flywayDesktop]
 enableMigrations = true
