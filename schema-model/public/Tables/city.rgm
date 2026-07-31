@@ -80,6 +80,12 @@ table "public"."city" {
       null = NOT NULL
       default = now()
     }
+    column "population" {
+      type = integer
+    }
+    column "nickname" {
+      type = character varying(50)
+    }
   )
 }
 

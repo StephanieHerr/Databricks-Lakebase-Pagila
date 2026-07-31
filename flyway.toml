@@ -19,7 +19,7 @@ shadowEnvironment = "shadow"
 deploymentPlatform = "Bash"
 
   [flywayDesktop.generate]
-  undoScripts = false
+  undoScripts = true
 
 [redgateCompare]
 filterFile = "filter.rgf"
